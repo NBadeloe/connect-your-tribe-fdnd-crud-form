@@ -1,0 +1,11 @@
+body {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.card {
+  width: 20em;
+  height: 15em;
+  background-color: blanchedalmond;
+  margin: 10em;
+}
