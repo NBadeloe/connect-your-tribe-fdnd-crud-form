@@ -56,6 +56,14 @@ const Book = {
         switch (pageIndex) {
             case 0:
                 this.flip.class.add(this.cover.front);
+                // flip everything
+                break;
+            case this.total:
+                this.flip.class.remove(this.cover.front);
+                // unflip everything
+                break;
+            default:
+                break;
         }
     },
     init() {
