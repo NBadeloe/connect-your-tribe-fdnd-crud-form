@@ -1,16 +1,36 @@
 <!DOCTYPE html>
 <html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/style.css" />
-    <title>FDND Founders</title>
-  </head>
-  <body>
-    <main class="overzicht">
-      <section class="card"></section>
-    </main>
-  </body>
-  <script src="./scripts/main.js"></script>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./styles/style.css" />
+        <title>FDND Founders</title>
+        <script src="/scripts/CRUD.js" defer></script>
+        <script src="/scripts/book.js" defer></script>
+    </head>
+    <body>
+        <main class="book loading">
+            <section class="book_cover front">
+                <header>
+                    <h1>Hey guys</h1>
+                </header>
+            </section>
+
+            <ol class="book_pages">
+                <li class="page">
+                    <section class="page_front"></section>
+                    <section class="page_back"></section>
+                </li>
+                <li class="page">
+                    <section class="page_front"></section>
+                    <section class="page_back"></section>
+                </li>
+            </ol>
+
+            <section class="book_cover back flipped"><span>Back</span></section>
+        </main>
+        <button id="prev">prev</button>
+        <button id="next">next</button>
+    </body>
 </html>

@@ -1,11 +1,118 @@
-body {
-  display: grid;
-  grid-template-columns: auto auto auto;
+:root {
+    --book-padding: 80px;
+    --book-border-width: 5px;
+    --book-border-color: #000;
+    --page-padding: 30px;
+    --page-border-width: 5px;
+    --page-border-color: #000;
+    --material-red-cloth: url("/assets/materials/red_cloth.jpeg");
+    --material-paper: url("/assets/materials/paper.jpeg");
 }
 
-.card {
-  width: 20em;
-  height: 15em;
-  background-color: blanchedalmond;
-  margin: 10em;
+body {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: always;
+    text-rendering: geometricPrecision;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* book */
+.book {
+    height: calc(100% - calc(2 * var(--book-padding)));
+    width: calc(100% - calc(2 * var(--book-padding)));
+    margin: var(--book-padding) 0 0 var(--book-padding);
+    position: relative;
+    /* background: #171717; */
+    perspective: 3200px;
+    transform: translateX(0);
+    transition: transform 0.3s;
+}
+
+.book.closed {
+    transform: translateX(-25%);
+}
+
+.book.end {
+    transform: translateX(25%);
+}
+
+.book .book_cover {
+    background: var(--material-red-cloth);
+    background-size: cover;
+    border-radius: 20px;
+    border: solid var(--book-border-color) var(--book-border-width);
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: transform 0.7s;
+    transform-origin: center right;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+}
+
+.book .book_cover.front > * {
+    backface-visibility: hidden;
+    position: relative;
+    transform: rotateY(-180deg);
+    transform-style: preserve-3d;
+}
+
+.book .book_cover.front {
+    z-index: 0;
+}
+
+.book .book_cover.front.flipped {
+    transform: rotateY(180deg);
+    z-index: 100;
+}
+
+.book .book_cover.back > * {
+    backface-visibility: hidden;
+    position: relative;
+}
+
+.book .book_cover.back {
+    z-index: 9999;
+}
+
+.book .book_cover.back.flipped {
+    transform: rotateY(180deg);
+    z-index: 0;
+}
+
+/* page */
+.book_pages {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.page {
+    list-style-type: none;
+    background: var(--material-paper);
+    transition: transform 0.7s;
+    transform-origin: center right;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    margin: var(--page-padding);
+    width: calc(50% - calc(var(--page-padding)));
+    height: calc(100% - calc(var(--page-padding) * 2));
+    position: absolute;
+    border: solid var(--page-border-color) var(--page-border-width);
+    z-index: 1;
+}
+
+.page.flipped {
+    transform: rotateY(180deg);
 }

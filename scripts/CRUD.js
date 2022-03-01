@@ -26,11 +26,31 @@ class CRUD {
 
     /**
      * Method to read entries from api endpoint with HTTP GET request
+     * Reads all pages
      * @param {*} url string of endpoint to get data object from
      * @returns array of object with type of member
      */
     async Read(url) {
-        return await this.fetchJSON(url);
+        return await new Promise(async (res) => {
+            let dataList = [];
+            let empty = false;
+            let page = 1;
+
+            while (!empty) {
+                console.log("reading page: " + page);
+                let pageData = await this.fetchJSON(url + `?page=${page}`);
+                if (!pageData || pageData.data.length === 0) {
+                    empty = true;
+                    break;
+                } else {
+                    console.log(pageData.data);
+                    dataList = dataList.concat(pageData.data);
+                    page++;
+                }
+            }
+
+            res(dataList);
+        });
     }
 
     /**
@@ -66,7 +86,7 @@ class CRUD {
     async fetchJSON(url, settings = {}, base = this.url) {
         return await fetch(base + url, settings)
             .then((res) => res.json())
-            .then((json) => json.data)
+            .then((json) => json) // not data
             .catch((err) => err);
     }
 }
