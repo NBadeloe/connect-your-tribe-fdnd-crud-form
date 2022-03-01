@@ -1,78 +1,87 @@
-const flipFront = () => {
-    frontCover.classList.toggle("flipped");
-    if (frontCover.classList.contains("flipped")) {
-        book.classList.add("closed");
-    } else {
-        book.classList.remove("closed");
-    }
-};
-
-const flipBack = () => {
-    backCover.classList.toggle("flipped");
-    if (
-        backCover.classList.contains("flipped") &&
-        !book.classList.contains("closed")
-    ) {
-        book.classList.remove("end");
-    } else {
-        book.classList.add("end");
-    }
-};
-
 const Book = {
     book: document.querySelector(".book"),
     cover: {
         front: document.querySelector(".book .book_cover.front"),
         back: document.querySelector(".book .book_cover.back"),
     },
+    pages: document.querySelectorAll(".book_pages .page"),
     pageIndex: 0,
     total: undefined,
 
-    flip: {
-        next() {
-            console.log("next");
-            if (pageIndex < total) {
-                pageIndex++;
-                this.update();
-            }
-        },
-        prev() {
-            console.log("prev");
-            if (pageIndex > 0) {
-                pageIndex--;
-                this.update();
-            }
-        },
-        class: {
-            add(e) {
-                e.classList.add("flipped");
-            },
-            remove(e) {
-                e.classList.remove("flipped");
-            },
-        },
+    /**
+     *
+     */
+    next() {
+        if (this.pageIndex < this.total) {
+            this.pageIndex++;
+            this.update();
+        }
+    },
+    prev() {
+        if (this.pageIndex > 0) {
+            this.pageIndex--;
+            this.update();
+        }
+    },
+    add(e) {
+        e.classList.add("flipped");
+    },
+    remove(e) {
+        e.classList.remove("flipped");
+    },
+    zIndex(e, i) {
+        e.style.zIndex = i;
     },
     update() {
-        switch (pageIndex) {
+        switch (this.pageIndex) {
             case 0:
-                this.flip.class.add(this.cover.front);
+                this.book.classList.add("closed");
+                this.book.classList.remove("open");
+                this.add(this.cover.front);
+                this.add(this.cover.back);
+                this.pages.forEach((p, i) => {
+                    this.add(p);
+                    this.zIndex(p, this.pages.length - i + 10);
+                });
                 // flip everything
                 break;
             case this.total:
-                this.flip.class.remove(this.cover.front);
+                this.book.classList.add("end");
+                this.remove(this.cover.back);
+                this.remove(this.cover.front);
+                this.pages.forEach((p, i) => {
+                    this.remove(p);
+                    this.zIndex(p, i + 10);
+                });
                 // unflip everything
                 break;
             default:
+                this.book.classList.remove("closed");
+                this.book.classList.add("open");
+                this.book.classList.remove("end");
+                this.remove(this.cover.front);
+                this.add(this.cover.back);
+                this.pages.forEach((p, i) => {
+                    if (i < this.pageIndex - 1) {
+                        this.remove(p);
+                        this.zIndex(p, i + 10);
+                    } else {
+                        this.add(p);
+                        this.zIndex(p, this.pages.length - i + 10);
+                    }
+                });
                 break;
         }
     },
     init() {
         document.querySelector("#prev").addEventListener("click", () => {
-            this.flip.prev();
+            this.prev();
         });
         document.querySelector("#next").addEventListener("click", () => {
-            this.flip.next();
+            this.next();
         });
+        this.total = this.pages.length + 2;
+        this.update();
     },
 };
 
