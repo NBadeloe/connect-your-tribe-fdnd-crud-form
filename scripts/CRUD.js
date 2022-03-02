@@ -37,13 +37,13 @@ class CRUD {
             let page = 1;
 
             while (!empty) {
-                console.log("reading page: " + page);
+                // console.log("reading page: " + page);
                 let pageData = await this.fetchJSON(url + `?page=${page}`);
                 if (!pageData || pageData.data.length === 0) {
                     empty = true;
                     break;
                 } else {
-                    console.log(pageData.data);
+                    // console.log(pageData.data);
                     dataList = dataList.concat(pageData.data);
                     page++;
                 }
