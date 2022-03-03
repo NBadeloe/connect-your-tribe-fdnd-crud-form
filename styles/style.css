@@ -161,3 +161,54 @@ body {
     transform: translate3d(0, 0, 0) rotateY(180deg);
     will-change: transform;
 }
+
+
+/* EMONA */
+*{
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
+.title, h1{
+    color: #FFC65C;
+    font-family: Rye;
+}
+
+h1, h2, h3{
+    color: #FFC65C;
+}
+
+p{
+    color: #FEFFDA;
+}
+
+body{
+    background-color: rgb(175, 47, 47);
+    text-align: center;
+    color: burlywood;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  
+  .flex-container > div {
+    background-color: pink;
+    width: 109px;
+    height: 100px;
+    margin: 5px;
+    text-align: center;
+    line-height: 7px;
+    font-size: 3px;
+  }
+
+.logo{
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+    float: left;
+}
+
+
+
