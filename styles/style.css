@@ -95,6 +95,7 @@ body {
     transform: translate3d(0, 0, 0) rotateY(0deg);
 }
 
+
 .book .book_cover.front > * {
     backface-visibility: hidden;
     position: relative;
@@ -371,3 +372,19 @@ body {
     margin-top: 10px;
     float: left;
 }
+
+
+/* Cover book design*/
+.book_cover.front.flipped {
+    text-align: center;
+    float: right;
+}
+
+.vl {
+    border-left: 10px solid #FFC65C;
+    border-radius: 3px;
+    height: 837px;
+    width: 850px;
+    margin-top: -622px;
+    margin-left: 20px;
+  }
