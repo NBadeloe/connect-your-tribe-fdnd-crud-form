@@ -37,6 +37,10 @@ const scripts = ["./scripts/CRUD.js", "./scripts/book.js"];
     console.log("%cFetched members:\n" + allMembers.length, "color: green");
     // Load all members in book
     console.log("%cLoading members", "color: green");
-    await Book.load(allMembers).then((_) => console.log("cards: ", Book.cards));
+    await Book.load(allMembers);
+    // .then((pages) =>
+    //     console.log("cards: ", Book.cards, pages)
+    // );
     console.log("%cLoaded", "color: green");
+    document.querySelector(".book").classList.remove("loading");
 })();

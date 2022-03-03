@@ -21,6 +21,8 @@
         <script src="./scripts/loader.js" defer></script>
     </head>
     <body>
+        <sidebar> </sidebar>
+
         <main class="book loading closed">
             <section class="book_cover front flipped">
                 <header>
@@ -34,15 +36,17 @@
                         <header>
                             <img
                                 src="./assets/icons/logo.svg"
+                                class="page_logo"
                                 width="100px"
                                 height="100px"
                             />
                             <h2>the founders</h2>
                             <span>FDND</span>
                         </header>
-                        <section class="card">
-                            <h1 id="name">Nandita Badeloe</h1>
-                            <h2 id="nickname">MrWorldWide</h2>
+
+                        <article class="card">
+                            <span>Nandita Badeloe</span>
+                            <span>MrWorldWide</span>
                             <img
                                 class="pf"
                                 src="https://avatars.githubusercontent.com/u/48018083?v=4"
@@ -61,7 +65,7 @@
                                     <img src="./assets/icons/github.svg" />
                                 </a>
                             </div>
-                        </section>
+                        </article>
                     </section>
                     <section class="page_back">
                         <header>
@@ -75,11 +79,6 @@
                         </header>
                         First Back
                     </section>
-                </li>
-
-                <li class="page flipped">
-                    <section class="page_front">First</section>
-                    <section class="page_back"></section>
                 </li>
             </ol>
 

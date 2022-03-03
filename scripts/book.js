@@ -190,6 +190,7 @@ const Book = {
         return new Promise(async (res, err) => {
             let img = new Image();
             img.src = src ? src : this.defaultImage;
+            img.classList.add("pf");
             img.onload = () => {
                 res(img);
             };
@@ -204,19 +205,44 @@ const Book = {
      * @param {*} cards list of card element
      * @returns page element with all the cards
      */
-    createPage(cards) {
-        let page = document.createElement("li");
-        let page_front = document.createElement("section");
-        page_front.classList.add("page_front");
-        let page_back = document.createElement("section");
-        page_back.classList.add("page_back");
-        cards.forEach((c, i) => {
-            if (i < cards.length / 2) page_back.appendChild(c);
-            else page_front.appendChild(c);
+    async createPage(cards) {
+        return await new Promise((res) => {
+            let page = document.createElement("li");
+            page.classList.add("page", "flipped");
+            let page_front = document.createElement("section");
+            page_front.classList.add("page_front");
+            let front_list = document.createElement("ol");
+            let page_back = document.createElement("section");
+            page_back.classList.add("page_back");
+            let back_list = document.createElement("ol");
+            cards.forEach((c, i) => {
+                if (c) {
+                    if (i < cards.length / 2) back_list.appendChild(c);
+                    else front_list.appendChild(c);
+                }
+            });
+
+            let header = document.createElement("header");
+            let logo = document.createElement("img");
+            logo.classList.add("page_logo");
+            logo.src = "./assets/icons/logo.svg";
+            let heading = document.createElement("h2");
+            heading.innerHTML = "the founders";
+            let span = document.createElement("span");
+            span.innerHTML = "FDND";
+            header.append(logo);
+            header.append(heading);
+            header.append(span);
+
+            page_front.append(header.cloneNode(true));
+            page_back.append(header);
+
+            page_front.append(front_list);
+            page_back.append(back_list);
+            page.append(page_front);
+            page.append(page_back);
+            res(page);
         });
-        page.append(page_front);
-        page.append(page_back);
-        return page;
     },
 
     /**
@@ -226,8 +252,72 @@ const Book = {
      * @param {*} img a Loaded image inside an HTMLImageElement object
      * @returns an standalone card with all content inside it as a html element
      */
-    createCard(m, img) {
-        return img;
+    async createCard(m, img) {
+        return await new Promise((res) => {
+            let card = document.createElement("article");
+            card.classList.add("card");
+            let name = document.createElement("span");
+            name.innerHTML = `${m.name} ${m.prefix}${m.surname}`;
+            let nickname = document.createElement("span");
+            nickname.innerHTML = m.nickname;
+            let bio = document.createElement("p");
+            bio.innerHTML = m.bio;
+
+            let icons = document.createElement("div");
+            icons.classList.add("icons");
+            if (m.githubHandle) {
+                let git = document.createElement("a");
+                git.href = `https://github.com/${m.githubHandle}`;
+                let gitIcon = document.createElement("img");
+                gitIcon.src = "./assets/icons/github.svg";
+                git.appendChild(gitIcon);
+                icons.appendChild(git);
+            }
+            if (m.url || !/\n/.exec(m.url)) {
+                let web = document.createElement("a");
+                web.href = m.url;
+                let webIcon = document.createElement("img");
+                webIcon.src = "./assets/icons/web.svg";
+                web.appendChild(webIcon);
+                icons.appendChild(web);
+            }
+            card.appendChild(name);
+            card.appendChild(nickname);
+            card.appendChild(img);
+            card.appendChild(bio);
+            card.appendChild(icons);
+            res(card);
+        });
+    },
+
+    /**
+     * Method returns a promise of filling the pages
+     * @returns returns promise with pages as resolve
+     */
+    async fillPages() {
+        return await new Promise((res) => {
+            // calculate how many per page
+            let cardsPerPage = 8;
+            let amount =
+                (this.cards.length - (this.cards.length % cardsPerPage)) /
+                    cardsPerPage +
+                (this.cards.length % cardsPerPage != 0 ? 1 : 0);
+            console.log(amount);
+            Promise.all(
+                [...Array(amount)].map(async (_, i) => {
+                    let list = [...Array(cardsPerPage)].map((_, idx) => {
+                        return this.cards[i * cardsPerPage + idx];
+                    });
+                    return await this.createPage(list);
+                })
+            ).then((pages) => {
+                pages.forEach((p) =>
+                    document.querySelector(".book_pages").appendChild(p)
+                );
+
+                res(pages);
+            });
+        });
     },
 
     /**
@@ -241,43 +331,32 @@ const Book = {
      */
     async load(members) {
         this.members = members;
-        return await Promise.all(
-            members.map(async (m) => {
-                return new Promise(async (res, err) => {
-                    await this.loadIMG(m.avatar)
-                        .then((mIMG) => {
-                            this.cards.push(this.createCard(m, mIMG));
-                            res("Succes");
-                        })
-                        .catch((e) => err(e));
-                }).catch((err) => {
-                    return err;
+        return await new Promise(async (res) => {
+            // promise to create all cards after image loads
+            await Promise.all(
+                members.map(async (m) => {
+                    return new Promise(async (res, err) => {
+                        await this.loadIMG(m.avatar)
+                            .then(async (mIMG) => {
+                                this.cards.push(await this.createCard(m, mIMG));
+                                res("Succes");
+                            })
+                            .catch((e) => err(e));
+                    }).catch((err) => {
+                        return err;
+                    });
+                })
+            ).then((msg) => {
+                msg.forEach((m) => {
+                    if (m != "Succes") console.log(m);
                 });
-            })
-        ).then((msg) => {
-            msg.forEach((m) => {
-                if (m != "Succes") console.log(m);
             });
-            this.init();
-        });
+            console.log("filling pages");
+            // function to fill all pages
+            await this.fillPages().then((_) => {
+                this.init();
+                res();
+            });
+        }).then((_) => console.log("resolved"));
     },
 };
-
-// (async () => {
-//     const api = new CRUD();
-
-//     console.log(
-//         await api.Create("member", {
-//             squadId: 1,
-//             type: "student",
-//             nickname: "hassan",
-//             name: "Beauclone",
-//             prefix: "",
-//             surname: "Dekker",
-//             avatar: "https://i.ibb.co/ggNjKw9/resize-smaller.png",
-//             githubHandle: "beaupd",
-//             bio: "",
-//             url: "\r",
-//         })
-//     );
-// })();
