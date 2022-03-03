@@ -5,10 +5,11 @@
     --page-padding: 30px;
     --page-border-width: 5px;
     --page-border-color: #000;
-    /* --material-red-cloth: red; */
-    --material-red-cloth: url("/assets/materials/red_cloth.jpeg");
-    /* --material-paper: #f1f1f1; */
-    --material-paper: url("/assets/materials/paper.jpeg");
+    --material-red-cloth: red;
+    --material-red-cloth: url("../assets/materials/red_cloth.jpg");
+    --material-paper: #f1f1f1;
+    --material-paper: url("../assets/materials/paper.jpeg");
+    --font-text: Open Sans, sans-serif;
 }
 
 body {
@@ -23,6 +24,7 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    font-family: var(--font-text);
 }
 
 /* book */
@@ -47,6 +49,7 @@ body {
 
 .book .book_cover {
     background: var(--material-red-cloth);
+    image-rendering: optimizeQuality;
     background-size: cover;
     border-radius: 20px;
     border: solid var(--book-border-color) var(--book-border-width);
@@ -59,7 +62,7 @@ body {
     transform-origin: center right;
     transform-style: preserve-3d;
     will-change: transform;
-    transform: translateZ(0) rotateY(0deg);
+    transform: translate3d(0, 0, 0) rotateY(0deg);
 }
 
 .book .book_cover.front > * {
@@ -78,8 +81,9 @@ body {
 }
 
 .book .book_cover.front.flipped {
-    transform: translateZ(0) rotateY(180deg);
+    transform: translate3d(0, 0, 0) rotateY(180deg);
     z-index: 9999;
+    will-change: transform;
 }
 
 .book .book_cover.back > * {
@@ -92,12 +96,13 @@ body {
 }
 
 .book .book_cover.back.flipped {
-    transform: translateZ(0) rotateY(180deg);
+    transform: translate3d(0, 0, 0) rotateY(180deg);
     animation: zBack 0s forwards;
+    will-change: transform;
 }
 
 .book.open .book_cover.back.flipped {
-    transform: translateZ(0) rotateY(180deg);
+    transform: translate3d(0, 0, 0) rotateY(180deg);
     /* z-index: 0; */
     animation: zBack 0.7s forwards;
 }
@@ -138,11 +143,12 @@ body {
 .page {
     list-style-type: none;
     background: var(--material-paper);
+    image-rendering: optimizeQuality;
     transition: transform 0.7s;
     transform-origin: center right;
     transform-style: preserve-3d;
     will-change: transform;
-    transform: translateZ(0) rotateY(0deg);
+    transform: translate3d(0, 0, 0) rotateY(0deg);
     margin: var(--page-padding);
     width: calc(50% - calc(var(--page-padding)));
     height: calc(100% - calc(var(--page-padding) * 2));
@@ -152,5 +158,6 @@ body {
 }
 
 .page.flipped {
-    transform: translateZ(0) rotateY(180deg);
+    transform: translate3d(0, 0, 0) rotateY(180deg);
+    will-change: transform;
 }
