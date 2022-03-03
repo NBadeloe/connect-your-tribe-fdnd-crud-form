@@ -98,9 +98,11 @@ const Book = {
                 this.pages.forEach((p, i) => {
                     if (i < this.pageIndex - 1) {
                         this.remove(p);
-                        this.zIndex(p, i + 10);
+
+                        setTimeout(() => this.zIndex(p, i + 10), 350);
                     } else {
                         this.add(p);
+
                         this.zIndex(p, this.pages.length - i + 10);
                     }
                 });
@@ -209,8 +211,8 @@ const Book = {
         let page_back = document.createElement("section");
         page_back.classList.add("page_back");
         cards.forEach((c, i) => {
-            if (i < cards.length / 2) page_front.appendChild(c);
-            else page_back.appendChild(c);
+            if (i < cards.length / 2) page_back.appendChild(c);
+            else page_front.appendChild(c);
         });
         page.append(page_front);
         page.append(page_back);
