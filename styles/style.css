@@ -2,14 +2,18 @@
     --book-padding: 80px;
     --book-border-width: 5px;
     --book-border-color: #000;
-    --page-padding: 30px;
+    --page-padding: 25px;
     --page-border-width: 5px;
     --page-border-color: #000;
+    --innerpage-padding: 25px;
+    --innerpage-border-width: 2px;
+    --innerpage-border-color: #000;
     --material-red-cloth: red;
     --material-red-cloth: url("../assets/materials/red_cloth.jpg");
     --material-paper: #f1f1f1;
     --material-paper: url("../assets/materials/paper.jpeg");
     --font-text: Open Sans, sans-serif;
+    --red-hex: #a0170c;
 }
 
 body {
@@ -160,4 +164,90 @@ body {
 .page.flipped {
     transform: translate3d(0, 0, 0) rotateY(180deg);
     will-change: transform;
+}
+
+.page_front,
+.page_back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 5px;
+    padding: var(--innerpage-padding);
+    border: solid var(--innerpage-border-width) var(--innerpage-border-color);
+    height: calc(
+        100% -
+            calc(
+                10px +
+                    calc(
+                        var(--innerpage-border-width) +
+                            calc(2 * var(--innerpage-padding))
+                    )
+            )
+    );
+    width: calc(
+        100% -
+            calc(
+                10px +
+                    calc(
+                        var(--innerpage-border-width) +
+                            calc(2 * var(--innerpage-padding))
+                    )
+            )
+    );
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.page header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px 0;
+    position: relative;
+}
+
+.page header img:before {
+    position: absolute;
+    content: "{}{}{}{}{}";
+    width: 5px;
+    height: 100%;
+    left: 0;
+    top: 50%;
+}
+
+.page header h2 {
+    margin: 0;
+    font-size: 48px;
+}
+
+.page_back {
+    transform: rotateY(180deg);
+}
+
+.page_front:before,
+.page_back:before {
+    position: absolute;
+    content: "{";
+    left: 0;
+    top: 0;
+    transform: rotate(45deg) translate(-35%, -32%);
+    font-size: 78px;
+    color: var(--red-hex);
+    backface-visibility: show;
+}
+
+.page_front:after,
+.page_back:after {
+    position: absolute;
+    content: "}";
+    right: 0;
+    top: 0;
+    transform: rotate(-45deg) translate(35%, -32%);
+    font-size: 78px;
+    color: var(--red-hex);
+    backface-visibility: show;
 }
