@@ -11,15 +11,18 @@ const Book = {
     total: undefined,
     members: [],
     cards: [],
+    animating: false,
 
     /**
      * This method increments the current pageIndex and
      * after that calls the update function
      */
     next() {
-        if (this.pageIndex < this.total) {
-            this.pageIndex++;
-            this.update();
+        if (!this.animating) {
+            if (this.pageIndex < this.total) {
+                this.pageIndex++;
+                this.update();
+            }
         }
     },
     /**
@@ -27,9 +30,11 @@ const Book = {
      * after that calls the update function
      */
     prev() {
-        if (this.pageIndex > 0) {
-            this.pageIndex--;
-            this.update();
+        if (!this.animating) {
+            if (this.pageIndex > 0) {
+                this.pageIndex--;
+                this.update();
+            }
         }
     },
 
@@ -101,6 +106,37 @@ const Book = {
                 });
                 break;
         }
+        this.animating = true;
+        setTimeout(() => (this.animating = false), 700);
+    },
+    touchEvent() {
+        let touching = false;
+        let startX = 0;
+        let threshold = 25;
+        const checkTouch = (mouseX) => {
+            if (touching) {
+                if (startX - threshold > mouseX) {
+                    this.next();
+                    touching = false;
+                }
+                if (startX + threshold < mouseX) {
+                    this.prev();
+                    touching = false;
+                }
+            }
+        };
+        window.addEventListener("mousemove", (e) => checkTouch(e.clientX));
+        window.addEventListener("touchmove", (e) => checkTouch(e.clientX));
+        window.addEventListener("mousedown", (e) => {
+            touching = true;
+            startX = e.clientX;
+        });
+        window.addEventListener("touchstart", (e) => {
+            touching = true;
+            startX = e.clientX;
+        });
+        window.addEventListener("mouseup", () => (touching = false));
+        window.addEventListener("touchend", () => (touching = false));
     },
 
     /**
@@ -116,6 +152,7 @@ const Book = {
         });
         this.pages = document.querySelectorAll(".book_pages .page");
         this.total = this.pages.length + 2;
+        this.touchEvent();
         this.update();
     },
 
@@ -158,6 +195,26 @@ const Book = {
                 err("Failed to load image " + src);
             };
         });
+    },
+
+    /**
+     * Method that fills both sides of a page and returns the filled page
+     * @param {*} cards list of card element
+     * @returns page element with all the cards
+     */
+    createPage(cards) {
+        let page = document.createElement("li");
+        let page_front = document.createElement("section");
+        page_front.classList.add("page_front");
+        let page_back = document.createElement("section");
+        page_back.classList.add("page_back");
+        cards.forEach((c, i) => {
+            if (i < cards.length / 2) page_front.appendChild(c);
+            else page_back.appendChild(c);
+        });
+        page.append(page_front);
+        page.append(page_back);
+        return page;
     },
 
     /**
