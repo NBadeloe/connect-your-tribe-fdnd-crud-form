@@ -111,6 +111,9 @@ const Book = {
         this.animating = true;
         setTimeout(() => (this.animating = false), 700);
     },
+    /**
+     * This method inits the drag function to go to the next page
+     */
     touchEvent() {
         let touching = false;
         let startX = 0;
