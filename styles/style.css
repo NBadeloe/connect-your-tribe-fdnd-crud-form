@@ -1,163 +1,217 @@
 :root {
-    --book-padding: 80px;
-    --book-border-width: 5px;
-    --book-border-color: #000;
-    --page-padding: 30px;
-    --page-border-width: 5px;
-    --page-border-color: #000;
-    --material-red-cloth: red;
-    --material-red-cloth: url("../assets/materials/red_cloth.jpg");
-    --material-paper: #f1f1f1;
-    --material-paper: url("../assets/materials/paper.jpeg");
-    --font-text: Open Sans, sans-serif;
+  --book-padding: 80px;
+  --book-border-width: 5px;
+  --book-border-color: #000;
+  --page-padding: 30px;
+  --page-border-width: 5px;
+  --page-border-color: #000;
+  --material-red-cloth: red;
+  --material-red-cloth: url("../assets/materials/red_cloth.jpg");
+  --material-paper: #f1f1f1;
+  --material-paper: url("../assets/materials/paper.jpeg");
+  --font-heading-color: #ffc65c;
+  --font-text-color: #feffda;
+  --font-text: "roboto", serif;
 }
 
 body {
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-smooth: always;
-    text-rendering: geometricPrecision;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    font-family: var(--font-text);
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: always;
+  text-rendering: geometricPrecision;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--font-text);
 }
 
 /* book */
 .book {
-    height: calc(100% - calc(2 * var(--book-padding)));
-    width: calc(100% - calc(2 * var(--book-padding)));
-    margin: var(--book-padding) 0 0 var(--book-padding);
-    position: relative;
-    /* background: #171717; */
-    perspective: 3200px;
-    transform: translateX(0);
-    transition: transform 0.3s;
+  height: calc(100% - calc(2 * var(--book-padding)));
+  width: calc(100% - calc(2 * var(--book-padding)));
+  margin: var(--book-padding) 0 0 var(--book-padding);
+  position: relative;
+  /* background: #171717; */
+  perspective: 3200px;
+  transform: translateX(0);
+  transition: transform 0.3s;
 }
 
 .book.closed {
-    transform: translateX(-25%);
+  transform: translateX(-25%);
 }
 
 .book.end {
-    transform: translateX(25%);
+  transform: translateX(25%);
 }
 
 .book .book_cover {
-    background: var(--material-red-cloth);
-    image-rendering: optimizeQuality;
-    background-size: cover;
-    border-radius: 20px;
-    border: solid var(--book-border-color) var(--book-border-width);
-    width: 50%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    transition: transform 0.7s;
-    transform-origin: center right;
-    transform-style: preserve-3d;
-    will-change: transform;
-    transform: translate3d(0, 0, 0) rotateY(0deg);
+  background: var(--material-red-cloth);
+  image-rendering: optimizeQuality;
+  background-size: cover;
+  border-radius: 20px;
+  border: solid var(--book-border-color) var(--book-border-width);
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: transform 0.7s;
+  transform-origin: center right;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform: translate3d(0, 0, 0) rotateY(0deg);
 }
 
 .book .book_cover.front > * {
-    backface-visibility: hidden;
-    position: relative;
-    transform: rotateY(-180deg);
-    transform-style: preserve-3d;
+  backface-visibility: hidden;
+  position: relative;
+  transform: rotateY(-180deg);
+  transform-style: preserve-3d;
 }
 
 .book .book_cover.front {
-    z-index: 0;
+  z-index: 0;
 }
 
 .book.open .book_cover.front {
-    animation: zBack 0.7s forwards;
+  animation: zBack 0.7s forwards;
 }
 
 .book .book_cover.front.flipped {
-    transform: translate3d(0, 0, 0) rotateY(180deg);
-    z-index: 9999;
-    will-change: transform;
+  transform: translate3d(0, 0, 0) rotateY(180deg);
+  z-index: 9999;
+  will-change: transform;
 }
 
 .book .book_cover.back > * {
-    backface-visibility: hidden;
-    position: relative;
+  backface-visibility: hidden;
+  position: relative;
 }
 
 .book .book_cover.back {
-    z-index: 9999;
+  z-index: 9999;
 }
 
 .book .book_cover.back.flipped {
-    transform: translate3d(0, 0, 0) rotateY(180deg);
-    animation: zBack 0s forwards;
-    will-change: transform;
+  transform: translate3d(0, 0, 0) rotateY(180deg);
+  animation: zBack 0s forwards;
+  will-change: transform;
 }
 
 .book.open .book_cover.back.flipped {
-    transform: translate3d(0, 0, 0) rotateY(180deg);
-    /* z-index: 0; */
-    animation: zBack 0.7s forwards;
+  transform: translate3d(0, 0, 0) rotateY(180deg);
+  /* z-index: 0; */
+  animation: zBack 0.7s forwards;
 }
 
 @keyframes zFront {
-    0% {
-        z-index: 0;
-    }
-    99% {
-        z-index: 0;
-    }
-    100% {
-        z-index: 9999;
-    }
+  0% {
+    z-index: 0;
+  }
+  99% {
+    z-index: 0;
+  }
+  100% {
+    z-index: 9999;
+  }
 }
 
 @keyframes zBack {
-    0% {
-        z-index: 9999;
-    }
-    99% {
-        z-index: 9999;
-    }
-    100% {
-        z-index: 0;
-    }
+  0% {
+    z-index: 9999;
+  }
+  99% {
+    z-index: 9999;
+  }
+  100% {
+    z-index: 0;
+  }
 }
 
 /* page */
 .book_pages {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
 
 .page {
-    list-style-type: none;
-    background: var(--material-paper);
-    image-rendering: optimizeQuality;
-    transition: transform 0.7s;
-    transform-origin: center right;
-    transform-style: preserve-3d;
-    will-change: transform;
-    transform: translate3d(0, 0, 0) rotateY(0deg);
-    margin: var(--page-padding);
-    width: calc(50% - calc(var(--page-padding)));
-    height: calc(100% - calc(var(--page-padding) * 2));
-    position: absolute;
-    border: solid var(--page-border-color) var(--page-border-width);
-    z-index: 1;
+  list-style-type: none;
+  background: var(--material-paper);
+  image-rendering: optimizeQuality;
+  transition: transform 0.7s;
+  transform-origin: center right;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform: translate3d(0, 0, 0) rotateY(0deg);
+  margin: var(--page-padding);
+  width: calc(50% - calc(var(--page-padding)));
+  height: calc(100% - calc(var(--page-padding) * 2));
+  position: absolute;
+  border: solid var(--page-border-color) var(--page-border-width);
+  z-index: 1;
 }
 
 .page.flipped {
-    transform: translate3d(0, 0, 0) rotateY(180deg);
-    will-change: transform;
+  transform: translate3d(0, 0, 0) rotateY(180deg);
+  will-change: transform;
+}
+
+/* cards */
+
+.card {
+  width: 250px;
+  height: 350px;
+  display: flexbox;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  padding: 4px;
+  background-image: var(--material-red-cloth);
+  background-size: cover;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.card > h1,
+h2 {
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: 2px;
+  color: var(--font-heading-color);
+}
+
+.card > h1 {
+  font-size: x-large;
+}
+
+.card > h2 {
+  font-size: medium;
+}
+
+.card > p {
+  font-size: small;
+  margin: 1px;
+  color: var(--font-text-color);
+}
+
+.pf {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 4px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.icons {
+  margin: 0px;
+  margin-bottom: 4px;
 }
