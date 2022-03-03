@@ -5,10 +5,10 @@
     --page-padding: 30px;
     --page-border-width: 5px;
     --page-border-color: #000;
-    --material-red-cloth: red;
-    /* --material-red-cloth: url("/assets/materials/red_cloth.jpeg"); */
-    --material-paper: #f1f1f1;
-    /* --material-paper: url("/assets/materials/paper.jpeg"); */
+    /* --material-red-cloth: red; */
+    --material-red-cloth: url("/assets/materials/red_cloth.jpeg");
+    /* --material-paper: #f1f1f1; */
+    --material-paper: url("/assets/materials/paper.jpeg");
 }
 
 body {
